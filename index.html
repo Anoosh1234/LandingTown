@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    *{
+      scroll-behavior: smooth;
+
+    }
+    
+    .background-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+      filter: brightness(0.5) contrast(1.2) saturate(1.1); /* Darkens and color grades the video */
+    }
+    .content {
+      position: relative;
+      z-index: 1;
+    }
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5); /* Adds a dark overlay */
+      z-index: 0;
+    }
+    .overlay-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      text-align: center;
+      z-index: 1;
+    }
+    .overlay-text h1 {
+      font-size: 3rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+    .overlay-text p {
+      font-size: 1.5rem;
+    }
+
+
+  .product-card {
+    border: 2px solid #8b31e3;
+    background-color: #f3f4f6; /* Gray background */
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .hover\:border-line:hover::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border: 2px solid #000; /* Change the border color as needed */
+  }
+
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+  }
+  .marquee {
+    animation: marquee 30s linear infinite;
+  }
+
+
+
+  .glass {
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .product-card {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .product-card.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .product-card {
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .product-card:hover {
+      transform: scale(1.05);
+    }
+
+    .product-card.fade-in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .product-card.hidden {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+
+    /* Animation styles */
+  @keyframes slideInFromLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* Apply animation to the about section */
+  #aboutSection .about-content {
+    animation: slideInFromLeft 1s ease-out;
+  }
+
+  #aboutSection .about-image {
+    animation: fadeIn 1s ease-out;
+  }
+
+
+  
+
+  
+  </style>
+</head>
+<body>
+  <div class="min-h-screen bg-zinc-100 flex flex-col">
+    <header class="bg-white shadow">
+      <div class="container mx-auto flex justify-between items-center py-4 px-6">
+        <div class="flex items-center">
+          <button id="menuToggle" class="md:hidden mr-4">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+            </svg>
+          </button>
+          <img src="https://placehold.co/100x50" alt="Web Factory Logo" class="h-8">
+        </div>
+        <nav class="hidden md:flex space-x-6 transition-all duration-300" id="navList">
+          <a href="#" class="text-zinc-700 hover:text-blue-500 font-medium">Home</a>
+          <a href="#" class="text-zinc-700 hover:text-blue-500 font-medium">About</a>
+          <a href="#" class="text-zinc-700 hover:text-blue-500 font-medium">Product</a>
+          <a href="#" class="text-zinc-700 hover:text-blue-500 font-medium">Contact</a>
+          <a href="#" class="text-zinc-700 hover:text-blue-500 font-medium">Query</a>
+          <a href="#" class="text-zinc-700 hover:text-blue-500 font-medium">Other</a>
+        </nav>
+        <div class="flex items-center space-x-4">
+          <a href="tel:+79625551455" class="text-zinc-700 hover:text-blue-500 font-medium">+911234567890</a>
+          <a href="#" class="border border-blue-500 text-blue-500 px-4 py-2 rounded hover:bg-blue-500 hover:text-white transition">Book Now</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="content overflow-hidden flex-grow">
+      <div class="absolute inset-0">
+        <video autoplay muted loop id="background-video" class="background-video">
+          <source src="https://res.cloudinary.com/duqsjmwyg/video/upload/v1717759241/h2y8fqvn5n6hlyksznyw.mp4" type="video/mp4">
+          Your browser does not support HTML5 video.
+        </video>
+      </div>
+      <div class="overlay"></div>
+
+      <div class="overlay-text">
+        <h1>Welcome to Our Website</h1>
+        <p>Your gateway to next generation international education</p>
+      </div>
+
+      
+    </main>
+  </div>
+
+  <div class="flex flex-col md:flex-row bg-zinc-100 p-8" id="aboutSection">
+    <div class="md:w-1/2 p-6 bg-white shadow-md rounded-md about-content">
+      <h2 class="text-3xl font-bold mb-4">About us</h2>
+      <p class="text-zinc-700 mb-4">
+        Gateway International Group, established in 2020, is an organization led by a team of accomplished international educators. Our primary objective is to empower institutions and organizations worldwide, enabling them to embrace new strategic directions and maximize the potential of emerging opportunities in the realm of international higher education.
+      </p>
+      <a href="#" class="text-blue-500 font-semibold">➞ Meet our team</a>
+    </div>
+    <div class="md:w-1/2 p-6 flex items-center justify-center">
+      <img src="https://res.cloudinary.com/duqsjmwyg/image/upload/v1717760217/mcsx8cgfav00hbz1mdd1.png" alt="Your gateway to next generation international education" class="rounded-md shadow-md about-image">
+    </div>
+  </div>
+  
+
+
+ 
+  <div class="container mx-auto p-6">
+    <h2 class="text-blue-600 font-semibold mb-2">PRODUCTS</h2>
+    <h1 class="text-3xl font-bold mb-6">Explore Eden’s people success and flexible workplace tools</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="product-card flex items-start space-x-4 p-4 rounded-lg glass">
+        <i class="fas fa-chart-line text-2xl"></i>
+        <div>
+          <h3 class="text-xl font-semibold">Performance Management</h3>
+          <p class="text-gray-600 dark:text-gray-400">Build flexible, people-centric 360 employee review processes, give feedback, and recognize wins.</p>
+          <div class="flex space-x-4 mt-2">
+            <a href="#" class="text-blue-600">Learn more &gt;</a>
+            <a href="#" class="text-blue-600">Watch the video &gt;</a>
+          </div>
+        </div>
+      </div>
+      <div class="product-card flex items-start space-x-4 p-4 rounded-lg glass">
+        <i class="fas fa-ticket-alt text-2xl"></i>
+        <div>
+          <h3 class="text-xl font-semibold">Internal Ticketing</h3>
+          <p class="text-gray-600 dark:text-gray-400">Manage employee tickets across departments with one streamlined help desk tool.</p>
+          <div class="flex space-x-4 mt-2">
+            <a href="#" class="text-blue-600">Learn more &gt;</a>
+            <a href="#" class="text-blue-600">Watch the video &gt;</a>
+          </div>
+        </div>
+      </div>
+      <div class="product-card flex items-start space-x-4 p-4 rounded-lg glass">
+        <i class="fas fa-desktop text-2xl"></i>
+        <div>
+          <h3 class="text-xl font-semibold">Desk Booking</h3>
+          <p class="text-gray-600 dark:text-gray-400">Manage your hybrid workplace easily and create a great office experience with desk booking.</p>
+          <div class="flex space-x-4 mt-2">
+            <a href="#" class="text-blue-600">Learn more &gt;</a>
+            <a href="#" class="text-blue-600">Watch the video &gt;</a>
+          </div>
+        </div>
+      </div>
+      <div class="product-card flex items-start space-x-4 p-4 rounded-lg glass">
+        <i class="fas fa-user-friends text-2xl"></i>
+        <div>
+          <h3 class="text-xl font-semibold">Visitor Management</h3>
+          <p class="text-gray-600 dark:text-gray-400">Create a great experience for office visitors and streamline the process of welcoming guests.</p>
+          <div class="flex space-x-4 mt-2">
+            <a href="#" class="text-blue-600">Learn more &gt;</a>
+            <a href="#" class="text-blue-600">Watch the video &gt;</a>
+          </div>
+        </div>
+      </div>
+      <div class="product-card flex items-start space-x-4 p-4 rounded-lg glass">
+        <i class="fas fa-truck text-2xl"></i>
+        <div>
+          <h3 class="text-xl font-semibold">Deliveries</h3>
+          <p class="text-gray-600 dark:text-gray-400">Make mailroom management easy, efficient, and automated.</p>
+          <div class="flex space-x-4 mt-2">
+            <a href="#" class="text-blue-600">Learn more &gt;</a>
+            <a href="#" class="text-blue-600">Watch the video &gt;</a>
+          </div>
+        </div>
+      </div>
+      <div class="product-card flex items-start space-x-4 p-4 rounded-lg glass">
+        <i class="fas fa-hard-hat text-2xl"></i>
+        <div>
+          <h3 class="text-xl font-semibold">Team Safety</h3>
+          <p class="text-gray-600 dark:text-gray-400">Ensure the safety and wellbeing of all employees and office visitors.</p>
+          <div class="flex space-x-4 mt-2">
+            <a href="#" class="text-blue-600">Learn more &gt;</a>
+            <a href="#" class="text-blue-600">Watch the video &gt;</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+
+    <div class="bg-white dark:bg-zinc-900 py-8">
+  <div class="text-center mb-8">
+    <h2 class="text-3xl font-bold text-zinc-900 dark:text-white">What people Thinks <span class="text-purple-600">About Us</span></h2>
+  </div>
+  <div class="flex flex-col md:flex-row justify-center items-center gap-6 mx-4">
+    <div class="relative bg-white dark:bg-zinc-800 shadow-lg rounded-lg p-6 max-w-sm border border-purple-200 dark:border-zinc-700 overflow-hidden hover:border-line">
+
+      <!-- Unique border style for top left corner -->
+      <div class="absolute top-0 left-0 w-8 h-8 bg-purple-500 transform -translate-x-1/2 translate-y-1/2 rotate-45"></div>
+    
+      <div class="flex items-center mb-4">
+        <img src="https://res.cloudinary.com/duqsjmwyg/image/upload/v1717762991/m4tvhgna7cjzgbdeevkk.png" alt="Jane Cooper" class="w-16 h-16 rounded-lg mr-4">
+        <div>
+          <h3 class="text-xl font-semibold text-zinc-900 dark:text-white">Jane Cooper</h3>
+          <div class="flex items-center text-yellow-500">
+            <span class="mr-1">⭐</span>
+            <span class="text-zinc-900 dark:text-white">4.0</span>
+          </div>
+        </div>
+      </div>
+    
+      <p class="text-zinc-600 dark:text-zinc-400 mb-4">Training programs can bring you a super exciting experience of learning through online! You never face any negative experience while enjoying your.</p>
+    
+      <a href="#" class="text-purple-600 dark:text-purple-400 font-semibold flex items-center">Explore More <span class="ml-1">➔</span></a>
+    
+    </div>
+
+    <div class="relative bg-white dark:bg-zinc-800 shadow-lg rounded-lg p-6 max-w-sm border border-purple-200 dark:border-zinc-700 overflow-hidden hover:border-line">
+
+      <!-- Unique border style for top left corner -->
+      <div class="absolute top-0 left-0 w-8 h-8 bg-purple-500 transform -translate-x-1/2 translate-y-1/2 rotate-45"></div>
+    
+      <div class="flex items-center mb-4">
+        <img src="https://res.cloudinary.com/duqsjmwyg/image/upload/v1717762991/m4tvhgna7cjzgbdeevkk.png" alt="Jane Cooper" class="w-16 h-16 rounded-lg mr-4">
+        <div>
+          <h3 class="text-xl font-semibold text-zinc-900 dark:text-white">Jane Cooper</h3>
+          <div class="flex items-center text-yellow-500">
+            <span class="mr-1">⭐</span>
+            <span class="text-zinc-900 dark:text-white">4.0</span>
+          </div>
+        </div>
+      </div>
+    
+      <p class="text-zinc-600 dark:text-zinc-400 mb-4">Training programs can bring you a super exciting experience of learning through online! You never face any negative experience while enjoying your.</p>
+    
+      <a href="#" class="text-purple-600 dark:text-purple-400 font-semibold flex items-center">Explore More <span class="ml-1">➔</span></a>
+    
+    </div>
+
+    
+
+    <div class="relative bg-white dark:bg-zinc-800 shadow-lg rounded-lg p-6 max-w-sm border border-purple-200 dark:border-zinc-700 overflow-hidden hover:border-line">
+
+      <!-- Unique border style for top left corner -->
+      <div class="absolute top-0 left-0 w-8 h-8 bg-purple-500 transform -translate-x-1/2 translate-y-1/2 rotate-45"></div>
+    
+      <div class="flex items-center mb-4">
+        <img src="https://res.cloudinary.com/duqsjmwyg/image/upload/v1717762991/m4tvhgna7cjzgbdeevkk.png" alt="Jane Cooper" class="w-16 h-16 rounded-lg mr-4">
+        <div>
+          <h3 class="text-xl font-semibold text-zinc-900 dark:text-white">Jane Cooper</h3>
+          <div class="flex items-center text-yellow-500">
+            <span class="mr-1">⭐</span>
+            <span class="text-zinc-900 dark:text-white">4.0</span>
+          </div>
+        </div>
+      </div>
+    
+      <p class="text-zinc-600 dark:text-zinc-400 mb-4">Training programs can bring you a super exciting experience of learning through online! You never face any negative experience while enjoying your.</p>
+    
+      <a href="#" class="text-purple-600 dark:text-purple-400 font-semibold flex items-center">Explore More <span class="ml-1">➔</span></a>
+    
+    </div>
+  </div>
+  <div class="text-center mt-8">
+    <button class="bg-purple-600 text-white py-2 px-6 rounded-lg">View More</button>
+  </div>
+</div>
+
+
+<div class="flex flex-col items-center justify-center min-h-screen bg-zinc-100 dark:bg-zinc-900">
+  <h1 class="text-3xl font-bold text-zinc-800 dark:text-zinc-200 mb-8">What we <span class="text-purple-600">Offer</span></h1>
+  <div class="relative w-full max-w-4xl">
+    <div class="flex overflow-hidden">
+      <div class="flex transition-transform duration-500 ease-in-out transform" id="slider">
+        <!-- Images -->
+        <div class="w-1/5 px-2 transform hover:scale-105 transition-transform duration-300 ease-in-out border-blue-500">
+          <img src="https://res.cloudinary.com/duqsjmwyg/image/upload/v1717759398/miss5huk4oljs4j3kkpy.jpg" alt="Image 1" class="object-cover h-64 w-full">
+        </div>
+        <div class="w-1/5 px-2 transform hover:scale-105 transition-transform duration-300 ease-in-out">
+          <img src="https://res.cloudinary.com/duqsjmwyg/image/upload/v1717759398/miss5huk4oljs4j3kkpy.jpg" alt="Image 2" class="object-cover h-64 w-full">
+        </div>
+        <div class="w-1/5 px-2 transform hover:scale-105 transition-transform duration-300 ease-in-out">
+          <img src="https://res.cloudinary.com/duqsjmwyg/image/upload/v1717759398/miss5huk4oljs4j3kkpy.jpg" alt="Image 3" class="object-cover h-64 w-full">
+        </div>
+        <div class="w-1/5 px-2 transform hover:scale-105 transition-transform duration-300 ease-in-out">
+          <img src="https://res.cloudinary.com/duqsjmwyg/image/upload/v1717759398/miss5huk4oljs4j3kkpy.jpg" alt="Image 4" class="object-cover h-64 w-full">
+        </div>
+        <div class="w-1/5 px-2 transform hover:scale-105 transition-transform duration-300 ease-in-out">
+          <img src="https://res.cloudinary.com/duqsjmwyg/image/upload/v1717759398/miss5huk4oljs4j3kkpy.jpg" alt="Image 5" class="object-cover h-64 w-full">
+        </div>
+      </div>
+    </div>
+    <div class="absolute inset-0 flex items-center justify-between px-4">
+      <button id="prev" class="bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 p-2 rounded-full shadow-md hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors">
+        &#8592;
+      </button>
+      <button id="next" class="bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 p-2 rounded-full shadow-md hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors">
+        &#8594;
+      </button>
+    </div>
+  </div>
+  <div class="mt-4 text-center text-zinc-600 dark:text-zinc-400 max-w-xl font-semibold" id="imageDescription">
+    <p>Diverse Courses: Explore a wide range of academic programs</p>
+</div>
+</div>
+
+
+
+
+    <div class="flex flex-col md:flex-row items-center bg-white dark:bg-zinc-900 p-6 rounded-lg shadow-lg">
+  <div class="relative w-full md:w-1/2">
+    <img class="rounded-lg" src="https://res.cloudinary.com/duqsjmwyg/image/upload/v1717759395/byvz6rlpzwe6rvr5pycc.jpg" alt="Travel Image">
+  
+    <div class="absolute bottom-4 left-4 bg-white dark:bg-zinc-800 p-4 rounded-lg shadow-md">
+      <div class="flex items-center">
+        <div>
+          <p class="text-zinc-600 dark:text-zinc-300 text-sm">successful People</p>
+          <p id="visitorCount" class="text-black dark:text-white text-lg font-semibold">1</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="w-full md:w-1/2 mt-6 md:mt-0 md:ml-6">
+    <h2 class="text-2xl font-bold text-black dark:text-white">Welcome to Your Gateway to Global Education</h2>
+    <p class="mt-4 text-zinc-600 dark:text-zinc-300">Discover a world of academic opportunities with our overseas education services. Whether you aim to explore diverse courses, gain insights into various countries, or navigate the application process, we are here to guide you every step of the way. Transform your educational dreams into reality and embark on an exciting journey towards a brighter future. Explore, apply, and succeed with our expert support and resources tailored just for you.</p>
+    <button class="mt-6 bg-purple-500 text-white px-4 py-2 rounded-lg shadow-md">Read More</button>
+  </div>
+</div>
+
+
+
+
+
+
+    <div class="min-h-screen flex items-center justify-center bg-purple-900 p-6">
+  <div class="max-w-4xl w-full bg-white rounded-lg shadow-lg flex flex-col md:flex-row">
+    <div class="p-6 md:w-1/2">
+      <h2 class="text-2xl font-bold text-black mb-4">"Open the doors to<span class="text-purple-500"> global opportunities.</span><br> Enroll today for your international education adventure!" </h2>
+      <div class="text-black space-y-4">
+        <div class="flex items-center">
+          <i class="fas fa-envelope mr-2"></i>
+          <span>SaulDesign@gmail.com</span>
+        </div>
+        <div class="flex items-center">
+          <i class="fas fa-phone mr-2"></i>
+          <span>+123 456 789</span>
+        </div>
+        <div class="flex items-center">
+          <i class="fas fa-map-marker-alt mr-2"></i>
+          <span>123 Street 456 House</span>
+        </div>
+      </div>
+        
+      <div class="flex space-x-4 mt-6">
+        <a href="#" class="bg-purple-500 p-2 rounded-full">
+          <i class="fab fa-facebook"></i>
+        </a>
+        <a href="#" class="bg-purple-500 p-2 rounded-full">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href="#" class="bg-purple-500 p-2 rounded-full">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </div>
+    </div>
+
+
+
+    <div class="p-6 md:w-1/2 bg-white rounded-r-lg" id="contact">
+      <h3 class="text-lg font-semibold mb-4">Contact Form</h3>
+     
+      <form class="space-y-4" id="contact">
+        <div>
+          <input type="text" placeholder="Your full name" class="w-full border-b-2 border-purple-500 py-2 focus:outline-none">
+        </div>
+        <div>
+          <input type="text" placeholder="Your phone number" class="w-full border-b-2 border-purple-500 py-2 focus:outline-none">
+        </div>
+        <div>
+          <input type="text" placeholder="Your country of residence" class="w-full border-b-2 border-purple-500 py-2 focus:outline-none">
+        </div>
+        <div>
+          <input type="email" placeholder="Your email address" class="w-full border-b-2 border-zinc-300 py-2 focus:outline-none">
+        </div>
+        <div>
+          <textarea placeholder="Your message or specific requirements" class="w-full border-b-2 border-zinc-300 py-2 focus:outline-none"></textarea>
+        </div>
+        <button type="submit" class="bg-purple-500 text-white px-6 py-3 rounded-full flex items-center justify-center">
+          <i class="fas fa-plane mr-2"></i> Submit Inquiry
+        </button>
+      </form>
+      
+    </div>
+  </div>
+</div>
+
+
+
+    <div class="bg-cover bg-center text-white py-10 px-5" style="background-image: url('https://res.cloudinary.com/duqsjmwyg/image/upload/v1717759396/eqrlvk9wmvcsji18sr0l.jpg');">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <div>
+      <h2 class="text-3xl font-bold">Global Opportunities</h2>
+      <p class="mt-4">Global Opportunities Pvt. Ltd. is India’s leading education consultant that undertakes students' recruitment from India for its 700+ Institution partners across the globe.</p>
+      <div class="flex space-x-4 mt-4">
+        <a href="#" class="text-2xl"><i class="fab fa-facebook"></i></a>
+        <a href="#" class="text-2xl"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="text-2xl"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="text-2xl"><i class="fab fa-linkedin"></i></a>
+
+       
+      </div>
+    </div>
+    <div>
+      <h3 class="text-xl font-bold text-blue-400">Explore Countries</h3>
+      <p class="mt-4">Study in USA | Study in Canada | Study in Australia | Study in UK | Study in New Zealand | Study in Ireland | Study in Germany | Study in Singapore | Study in Switzerland | Study in Malaysia | Study in Dubai | Explore All Countries</p>
+    </div>
+    <div>
+      <h3 class="text-xl font-bold text-blue-400">Financial assistance</h3>
+      <p class="mt-4">Scholarships in Germany | Scholarships in New Zealand | Scholarships in Australia | Scholarships in UK | Scholarships in USA | Scholarships in Canada | Scholarships in Singapore</p>
+      <h3 class="text-xl font-bold text-blue-400 mt-8">Exams</h3>
+      <p class="mt-4">GMAT | GRE | IELTS | PTE | SAT | TOEFL</p>
+    </div>
+    <div>
+      <h3 class="text-xl font-bold text-blue-400">Our Branches</h3>
+      <p class="mt-4">Delhi | Amritsar | Ludhiana | Chandigarh | Bathinda | Hyderabad | Chennai | Thane | Dadar | Bandra | Pune | Ahmedabad | Patiala | Jalandhar | Batala | Bangalore | Mohali | Visakhapatnam | Nepal</p>
+      <h3 class="text-xl font-bold text-blue-400 mt-8">Other links</h3>
+      <p class="mt-4">Careers | Image Gallery | Video Gallery | Contact Us | Sitemap</p>
+    </div>
+  </div>
+  <div class="fixed right-0 top-1/2 transform -translate-y-1/2 bg-blue-500 text-white py-2 px-4 rounded-l-lg">
+    <a href="#contact" class="text-lg font-bold">Register Now</a>
+  </div>
+</div>
+  
+
+
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+   const productCards = document.querySelectorAll('.product-card');
+
+   const observer = new IntersectionObserver((entries) => {
+     entries.forEach((entry, index) => {
+       if (entry.isIntersecting) {
+         setTimeout(() => {
+           entry.target.classList.add('show');
+         }, index * 200); // Delay each card's animation
+       } else {
+         entry.target.classList.remove('show');
+       }
+     });
+   }, {
+     threshold: 0.1
+   });
+
+   productCards.forEach(card => {
+     observer.observe(card);
+   });
+ });
+
+
+  // Get the elements by their IDs
+  const travelPackagesCount = document.getElementById('travelPackagesCount');
+  const visitorCount = document.getElementById('visitorCount');
+
+  // Set the maximum value for the numbers
+  const maxNumber = 4550;
+
+  // Function to increment the numbers sequentially
+  function incrementNumbers() {
+    let count = 1;
+    const interval = setInterval(() => {
+      // Update the numbers
+      visitorCount.textContent = count;
+
+      // Stop the interval when the count reaches the maximum number
+      if (count === maxNumber) {
+        clearInterval(interval);
+      }
+
+      // Increment the count
+      count++;
+    }, 1); // Adjust the interval time (in milliseconds) as needed
+  }
+
+  // Call the function to start incrementing the numbers
+  incrementNumbers();
+
+
+
+  const slider = document.getElementById('slider');
+  const prev = document.getElementById('prev');
+  const next = document.getElementById('next');
+  const images = slider.querySelectorAll('div');
+  const imageDescriptions = ["Diverse Courses: Explore a wide range of academic programs", "Personalized Counseling: Get tailored guidance from experienced counselors.", "Global Partnerships: Access top universities worldwide.", "Pre-Departure Support: Smooth transition with travel and accommodation assistance.", "Career Development: Enhance employability with internship and networking opportunities."];
+
+  let currentIndex = 0;
+
+  function updateVisibility() {
+    images.forEach((image, index) => {
+      let distance = Math.abs(currentIndex - index);
+      if (distance <= 2) {
+        image.style.display = 'block';
+        let translateX = (index - currentIndex) * 20;
+        image.style.transform = `translateX(${translateX}%)`;
+      } else {
+        image.style.display = 'none';
+      }
+    });
+    document.getElementById('imageDescription').innerHTML = `<p>${imageDescriptions[currentIndex]}</p>`;
+  }
+
+  function moveNext() {
+    currentIndex = (currentIndex + 1) % images.length;
+    updateVisibility();
+  }
+
+  function movePrev() {
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+    updateVisibility();
+  }
+
+  next.addEventListener('click', moveNext);
+  prev.addEventListener('click', movePrev);
+
+  updateVisibility();
+
+
+
+  // Toggle function for mobile menu
+  document.getElementById('menuToggle').addEventListener('click', function() {
+    document.getElementById('navList').classList.toggle('hidden');
+  });
+
+
+
+
+</script>
+  </body>
+</html>
