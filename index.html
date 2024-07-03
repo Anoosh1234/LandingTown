@@ -11,6 +11,25 @@
 
     }
     
+
+    #toggleInfoPanel {
+    background-color: #000000; /* Purple background */
+    color: #fff; /* White text */
+    padding: 8px; /* Padding for better click area */
+    border-radius: 30%; /* Make it circular */
+    position: absolute; /* Position it absolutely within the infoPanel */
+    top: 10px; /* Adjust these values to position outside */
+    right: -10px; /* Adjust these values to position outside */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add a shadow for better visibility */
+}
+
+#toggleInfoPanel i {
+    font-size: 16px; /* Adjust icon size if needed */
+}
+
+
+
+
     .background-video {
       position: absolute;
       top: 0;
@@ -21,36 +40,81 @@
       z-index: -1;
       filter: brightness(0.5) contrast(1.2) saturate(1.1); /* Darkens and color grades the video */
     }
+
+
     .content {
-      position: relative;
-      z-index: 1;
-    }
-    .overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5); /* Adds a dark overlay */
-      z-index: 0;
-    }
-    .overlay-text {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      color: white;
-      text-align: center;
-      z-index: 1;
-    }
-    .overlay-text h1 {
-      font-size: 3rem;
-      font-weight: bold;
-      margin-bottom: 1rem;
-    }
-    .overlay-text p {
-      font-size: 1.5rem;
-    }
+  position: relative;
+  overflow: hidden;
+  flex-grow: 1;
+}
+
+.background-slider {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.background-slider .slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.5s ease; /* Transition opacity over 0.5 seconds */
+}
+
+.background-slider .slide.active {
+  display: block;
+  opacity: 1;
+}
+
+.background-slider .slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Adjust opacity as needed */
+}
+
+.overlay-text {
+  position: absolute;
+  bottom: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: white;
+  width: 80%;
+}
+
+.overlay-text h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.overlay-text p {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.overlay-text .bg-white {
+  background-color: white;
+  color: black;
+}
+
+.overlay-text .bg-white a {
+  text-decoration: none;
+}
+
+.background-slider .slide.active {
+  display: block;
+}
 
 
   .product-card {
@@ -117,6 +181,7 @@
     }
 
 
+
     /* Animation styles */
   @keyframes slideInFromLeft {
     from {
@@ -147,6 +212,37 @@
     animation: fadeIn 1s ease-out;
   }
 
+/* Media queries */
+@media (max-width: 480px) {
+        .slider-item {
+            flex: 0 0 20%; /* 1/5 width for larger screens */
+        }
+
+        h1{
+          font-size: 2rem;
+
+        }
+        .overlay-text{
+          font-size: 50%;
+        }
+
+        .PanelText{
+          font-size: 0.4rem;
+          
+        }
+    }
+
+    @media (min-width: 768px) {
+        .slider-item {
+            flex: 0 0 20%; /* 1/5 width for tablets and larger */
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .slider-item {
+            flex: 0 0 20%; /* 1/5 width for desktops */
+        }
+    }
 
   
 
@@ -155,56 +251,234 @@
 </head>
 <body>
   <div class="min-h-screen bg-zinc-100 flex flex-col">
-    <header class="bg-white shadow">
-      <div class="container mx-auto flex justify-between items-center py-4 px-6">
-        <div class="flex items-center">
-          <button id="menuToggle" class="md:hidden mr-4">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-            </svg>
-          </button>
-          <img src="https://placehold.co/100x50" alt="Web Factory Logo" class="h-8">
+    <html>
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+        <script src="https://unpkg.com/unlazy@0.11.3/dist/unlazy.with-hashing.iife.js" defer init></script>
+        <script type="text/javascript">
+          window.tailwind.config = {
+            darkMode: ['class'],
+            theme: {
+              extend: {
+                colors: {
+                  border: 'hsl(var(--border))',
+                  input: 'hsl(var(--input))',
+                  ring: 'hsl(var(--ring))',
+                  background: 'hsl(var(--background))',
+                  foreground: 'hsl(var(--foreground))',
+                  primary: {
+                    DEFAULT: 'hsl(var(--primary))',
+                    foreground: 'hsl(var(--primary-foreground))'
+                  },
+                  secondary: {
+                    DEFAULT: 'hsl(var(--secondary))',
+                    foreground: 'hsl(var(--secondary-foreground))'
+                  },
+                  destructive: {
+                    DEFAULT: 'hsl(var(--destructive))',
+                    foreground: 'hsl(var(--destructive-foreground))'
+                  },
+                  muted: {
+                    DEFAULT: 'hsl(var(--muted))',
+                    foreground: 'hsl(var(--muted-foreground))'
+                  },
+                  accent: {
+                    DEFAULT: 'hsl(var(--accent))',
+                    foreground: 'hsl(var(--accent-foreground))'
+                  },
+                  popover: {
+                    DEFAULT: 'hsl(var(--popover))',
+                    foreground: 'hsl(var(--popover-foreground))'
+                  },
+                  card: {
+                    DEFAULT: 'hsl(var(--card))',
+                    foreground: 'hsl(var(--card-foreground))'
+                  },
+                },
+              }
+            }
+          }
+        </script>
+        <style type="text/tailwindcss">
+          @layer base {
+            :root {
+              --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 5.9% 10%;
+    --radius: 0.5rem;
+            }
+            .dark {
+              --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+            }
+          }
+        </style>
+      </head>
+      <body>
+        <nav class="bg-card text-card-foreground border-b border-border">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <div class="flex-shrink-0">
+            <img class="h-16 w-auto" src="https://res.cloudinary.com/dlw595vhm/image/upload/v1719920194/Edexon_d2bpcv.jpg" alt="HORSEY logo">
+          </div>
+          <div class="flex items-center">
+            <div class="-mr-2 flex sm:hidden">
+              <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-zinc-400 hover:text-zinc-500 hover:bg-zinc-100 focus:outline-none focus:bg-zinc-100 focus:text-zinc-500" id="mobile-menu-button">
+                <span class="sr-only">Open main menu</span>
+                <i class="fas fa-bars text-xl text-gray-600"></i>
+
+              </button>
+            </div>
+            <div class="hidden sm:flex sm:space-x-8 sm:ml-6" id="mobile-menu">
+              <a href="#" class="border-transparent text-zinc-500 hover:border-zinc-300 hover:text-zinc-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Home</a>
+              <a href="#aboutSection" class="border-transparent text-zinc-500 hover:border-zinc-300 hover:text-zinc-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">About Us</a>
+              <div class="relative">
+                <a href="#" class="border-transparent text-zinc-500 hover:border-zinc-300 hover:text-zinc-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Countries</a>
+                <div class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 z-10">
+                  <div class="py-1">
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Country 1</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Country 2</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Country 3</a>
+                    <!-- Add more countries as needed -->
+                  </div>
+                </div>
+              </div>
+              <a href="#" class="border-transparent text-zinc-500 hover:border-zinc-300 hover:text-zinc-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Agents</a>
+              <a href="#contact" class="border-transparent text-zinc-500 hover:border-zinc-300 hover:text-zinc-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Contact Us</a>
+            </div>
+            
+          </div>
         </div>
-        <nav class="hidden md:flex space-x-6 transition-all duration-300" id="navList">
-          <a href="#" class="text-zinc-700 hover:text-blue-500 font-medium">Home</a>
-          <a href="#aboutSection" class="text-zinc-700 hover:text-blue-500 font-medium">About</a>
-          <a href="#productSection" class="text-zinc-700 hover:text-blue-500 font-medium">Product</a>
-          <a href="#contact" class="text-zinc-700 hover:text-blue-500 font-medium">Contact</a>
-          <a href="#ReviewSection" class="text-zinc-700 hover:text-blue-500 font-medium">Review</a>
-          <a href="#other" class="text-zinc-700 hover:text-blue-500 font-medium">Other</a>
-        </nav>
-        <div class="flex items-center space-x-4">
-          <a href="tel:+79625551455" class="text-zinc-700 hover:text-blue-500 font-medium">+911234567890</a>
-          <a href="#" class="border border-purple-500 text-purple-500 px-4 py-2 rounded hover:bg-purple-500 hover:text-white transition">Book Now</a>
-        </div>
       </div>
-    </header>
-
-    <main class="content overflow-hidden flex-grow">
-      <div class="absolute inset-0">
-        <video autoplay muted loop id="background-video" class="background-video">
-          <source src="https://res.cloudinary.com/duqsjmwyg/video/upload/v1717759241/h2y8fqvn5n6hlyksznyw.mp4" type="video/mp4">
-          Your browser does not support HTML5 video.
-        </video>
-      </div>
-      <div class="overlay"></div>
-
-      <div class="overlay-text">
-        <h1>Welcome to Our Website</h1>
-        <p>Your gateway to next generation international education</p>
-      </div>
-
       
+      <div class="sm:hidden" id="mobile-menu-content" style="display: none;">
+        <div class="px-2 pt-2 pb-3 space-y-1">
+          <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-zinc-700 hover:text-zinc-900 hover:bg-zinc-50">Home</a>
+          <a href="#aboutSection" class="block px-3 py-2 rounded-md text-base font-medium text-zinc-700 hover:text-zinc-900 hover:bg-zinc-50">About Us</a>
+          <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-zinc-700 hover:text-zinc-900 hover:bg-zinc-50">Countries</a>
+          <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-zinc-700 hover:text-zinc-900 hover:bg-zinc-50">Agents</a>
+          <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-zinc-700 hover:text-zinc-900 hover:bg-zinc-50">Contact Us</a>
+
+        </div>
+      </div>
+    </nav>
+    <script>
+      document.getElementById('mobile-menu-button').addEventListener('click', function() {
+        var menu = document.getElementById('mobile-menu-content');
+        if(menu.style.display === "none") {
+          menu.style.display = "block";
+        } else {
+          menu.style.display = "none";
+        }
+      });
+    </script>
+    
+    
+    
+      </body>
+    </html>
+
+    <main class="content overflow-hidden flex-grow relative">
+      <div class="absolute inset-0">
+        <!-- Background image slider -->
+        <div id="background-slider" class="background-slider">
+          <div class="slide active">
+            <img src="https://res.cloudinary.com/dlw595vhm/image/upload/v1719987481/day-office-travel-agency_riubt8.jpg" alt="Background Image 1">
+            <div class="overlay"></div>
+            <div class="overlay-text">
+              <h1>Your Bright Future is our mission!!</h1>
+              <p>We make the difference by creating a better pathway for you.</p>
+              <div class="bg-white text-white inline-block py-2 px-4 rounded-md mt-4">
+                <a href="#contact" class="text-lg font-bold text-black hover:text-gray-600 block py-2">Register Now</a>
+              </div>
+            </div>
+          </div>
+          <div class="slide">
+            <img src="https://res.cloudinary.com/dlw595vhm/image/upload/v1719982762/Trainingsformen_Sprachreisen-1-1_bxafws.jpg" alt="Background Image 2">
+            <div class="overlay"></div>
+            <div class="overlay-text">
+              <h1>Discover Endless Opportunities!!</h1>
+              <p>Explore our global network and unlock your potential.</p>
+              <div class="bg-white text-white inline-block py-2 px-4 rounded-md mt-4">
+                <a href="#contact" class="text-lg font-bold text-black hover:text-gray-600 block py-2">Learn More</a>
+              </div>
+            </div>
+          </div>
+
+
+
+          <div class="slide">
+            <img src="https://res.cloudinary.com/dlw595vhm/image/upload/v1719991728/155640_ksqoxj.jpg" alt="Background Image 2">
+            <div class="overlay"></div>
+            <div class="overlay-text">
+              <h1>Empowering Dreams, Shaping Futures!</h1>
+              <p>Your Success, Our Commitment!</p>
+              <div class="bg-white text-white inline-block py-2 px-4 rounded-md mt-4">
+                <a href="#contact" class="text-lg font-bold text-black hover:text-gray-600 block py-2">Learn More</a>
+              </div>
+            </div>
+          </div>
+
+
+
+
+
+          <!-- Add more slides as needed -->
+        </div>
+        
+        <!-- Manual navigation buttons -->
+        <div class="slider-controls absolute bottom-4 left-4">
+          <button id="prevSlide" class="text-white px-4 py-2 rounded-lg mr-2"><i class="fas fa-chevron-left"></i></button>
+          <button id="nextSlide" class="text-white px-4 py-2 rounded-lg"><i class="fas fa-chevron-right"></i></button>
+        </div>
+      </div>
     </main>
+    
+
   </div>
 
   <div class="flex flex-col md:flex-row bg-zinc-100 p-8" id="aboutSection">
     <div class="md:w-1/2 p-6 bg-white shadow-md rounded-md about-content">
-      <h2 class="text-3xl font-bold mb-4">About us</h2>
-      <p class="text-zinc-700 mb-4">
-        EDEXON INTERNATIONAL Group, established in 2020, is an organization led by a team of accomplished international educators. Our primary objective is to empower institutions and organizations worldwide, enabling them to embrace new strategic directions and maximize the potential of emerging opportunities in the realm of international higher education.
-      </p>
-      <a href="#" class="text-purple-500 font-semibold">➞ Meet our team</a>
+      <h2 class="text-3xl font-bold mb-4 text-gray-700">About us</h2>
+      <h3 class="text-3xl font-bold mb-4 text-ga">Welcome To <span class="text-purple-600">Edexon International</span></h3>
+      <p class="text-zinc-600 text-lg mb-4">
+        We are dedicated for exploring various study abroad options for the students, having the desire to study overseas.<span class="text-purple-600">Edexon</span> International is an overseas educational consultant, with an expertise in Study Abroad. Our mission is to grow ourselves in the field of study abroad education in the manner of improvising our services which are being provided to the students with the dreams of studying abroad.      </p>
+      <a href="#" class="text-purple-500 font-semibold">➞ Learn More</a>
     </div>
     <div class="md:w-1/2 p-6 flex items-center justify-center">
       <img src="https://res.cloudinary.com/duqsjmwyg/image/upload/v1717760217/mcsx8cgfav00hbz1mdd1.png" alt="Your gateway to next generation international education" class="rounded-md shadow-md about-image">
@@ -216,13 +490,13 @@
  
   <div class="container mx-auto p-6" >
     <h2 class="text-purple-600 font-semibold mb-2" id="productSection">PRODUCTS</h2>
-    <h1 class="text-3xl font-bold mb-6">Explore Eden’s people success and flexible workplace tools</h1>
+    <h1 class="text-3xl font-bold mb-6"><span class="text-purple-600">Edexon</span> Empowering Your Journey with Comprehensive Support services</h1>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <div class="product-card flex items-start space-x-4 p-4 rounded-lg glass">
-        <i class="fas fa-chart-line text-2xl"></i>
+        <i class="fas fa-graduation-cap text-2xl"></i>
         <div>
-          <h3 class="text-xl font-semibold">Performance Management</h3>
-          <p class="text-gray-600 dark:text-gray-400">Build flexible, people-centric 360 employee review processes, give feedback, and recognize wins.</p>
+          <h3 class="text-xl font-semibold">Scholarships and Grants</h3>
+          <p class="text-gray-600 dark:text-gray-400">Explore opportunities for scholarships and grants to support your education</p>
           <div class="flex space-x-4 mt-2">
             <a href="#" class="text-purple-600">Learn more &gt;</a>
             <a href="#" class="text-purple-600">Watch the video &gt;</a>
@@ -230,10 +504,10 @@
         </div>
       </div>
       <div class="product-card flex items-start space-x-4 p-4 rounded-lg glass">
-        <i class="fas fa-ticket-alt text-2xl"></i>
+        <i class="fas fa-hand-holding-usd text-2xl"></i>
         <div>
-          <h3 class="text-xl font-semibold">Internal Ticketing</h3>
-          <p class="text-gray-600 dark:text-gray-400">Manage employee tickets across departments with one streamlined help desk tool.</p>
+          <h3 class="text-xl font-semibold">Financial Aids</h3>
+          <p class="text-gray-600 dark:text-gray-400">Discover financial aid options to ease your educational expenses.</p>
           <div class="flex space-x-4 mt-2">
             <a href="#" class="text-purple-600">Learn more &gt;</a>
             <a href="#" class="text-purple-600">Watch the video &gt;</a>
@@ -241,10 +515,10 @@
         </div>
       </div>
       <div class="product-card flex items-start space-x-4 p-4 rounded-lg glass">
-        <i class="fas fa-desktop text-2xl"></i>
+        <i class="fas fa-briefcase text-2xl"></i>
         <div>
-          <h3 class="text-xl font-semibold">Desk Booking</h3>
-          <p class="text-gray-600 dark:text-gray-400">Manage your hybrid workplace easily and create a great office experience with desk booking.</p>
+          <h3 class="text-xl font-semibold">Career Guidance</h3>
+          <p class="text-gray-600 dark:text-gray-400">Receive expert guidance to shape your career path effectively.</p>
           <div class="flex space-x-4 mt-2">
             <a href="#" class="text-purple-600">Learn more &gt;</a>
             <a href="#" class="text-purple-600">Watch the video &gt;</a>
@@ -252,10 +526,10 @@
         </div>
       </div>
       <div class="product-card flex items-start space-x-4 p-4 rounded-lg glass">
-        <i class="fas fa-user-friends text-2xl"></i>
+        <i class="fas fa-globe text-2xl"></i>
         <div>
-          <h3 class="text-xl font-semibold">Visitor Management</h3>
-          <p class="text-gray-600 dark:text-gray-400">Create a great experience for office visitors and streamline the process of welcoming guests.</p>
+          <h3 class="text-xl font-semibold">Overseas Assistance</h3>
+          <p class="text-gray-600 dark:text-gray-400">Navigate smoothly through the complexities of studying abroad.</p>
           <div class="flex space-x-4 mt-2">
             <a href="#" class="text-purple-600">Learn more &gt;</a>
             <a href="#" class="text-purple-600">Watch the video &gt;</a>
@@ -263,10 +537,10 @@
         </div>
       </div>
       <div class="product-card flex items-start space-x-4 p-4 rounded-lg glass">
-        <i class="fas fa-truck text-2xl"></i>
+        <i class="fas fa-plane-departure text-2xl"></i>
         <div>
-          <h3 class="text-xl font-semibold">Deliveries</h3>
-          <p class="text-gray-600 dark:text-gray-400">Make mailroom management easy, efficient, and automated.</p>
+          <h3 class="text-xl font-semibold">Orientation And First Fly Pack</h3>
+          <p class="text-gray-600 dark:text-gray-400">Prepare with essential guidance and resources for your journey abroad.</p>
           <div class="flex space-x-4 mt-2">
             <a href="#" class="text-purple-600">Learn more &gt;</a>
             <a href="#" class="text-purple-600">Watch the video &gt;</a>
@@ -274,10 +548,10 @@
         </div>
       </div>
       <div class="product-card flex items-start space-x-4 p-4 rounded-lg glass">
-        <i class="fas fa-hard-hat text-2xl"></i>
+        <i class="fas fa-clipboard-check text-2xl"></i>
         <div>
-          <h3 class="text-xl font-semibold">Team Safety</h3>
-          <p class="text-gray-600 dark:text-gray-400">Ensure the safety and wellbeing of all employees and office visitors.</p>
+          <h3 class="text-xl font-semibold">Placement Assistance</h3>
+          <p class="text-gray-600 dark:text-gray-400">Get support to secure rewarding job placements after graduation.</p>
           <div class="flex space-x-4 mt-2">
             <a href="#" class="text-purple-600">Learn more &gt;</a>
             <a href="#" class="text-purple-600">Watch the video &gt;</a>
@@ -295,7 +569,7 @@
     <h2 class="text-3xl font-bold text-zinc-900 dark:text-white">What people Thinks <span class="text-purple-600">About Us</span></h2>
   </div>
   <div class="flex flex-col md:flex-row justify-center items-center gap-6 mx-4">
-    <div class="relative bg-white dark:bg-zinc-800 shadow-lg rounded-lg p-6 max-w-sm border border-purple-200 dark:border-zinc-700 overflow-hidden hover:border-line">
+    <div class="relative bg-white dark:bg-zinc-800 shadow-lg rounded-lg p-6 max-w-sm border border-purple-200 dark:border-zinc-700 h-64 overflow-hidden hover:border-line">
 
       <!-- Unique border style for top left corner -->
       <div class="absolute top-0 left-0 w-8 h-8 bg-purple-500 transform -translate-x-1/2 translate-y-1/2 rotate-45"></div>
@@ -303,7 +577,7 @@
       <div class="flex items-center mb-4">
         <img src="https://res.cloudinary.com/duqsjmwyg/image/upload/v1717762991/m4tvhgna7cjzgbdeevkk.png" alt="Jane Cooper" class="w-16 h-16 rounded-lg mr-4">
         <div>
-          <h3 class="text-xl font-semibold text-zinc-900 dark:text-white">Jane Cooper</h3>
+          <h3 class="text-xl font-semibold text-zinc-900 dark:text-white">Vivek M S</h3>
           <div class="flex items-center text-yellow-500">
             <span class="mr-1">⭐</span>
             <span class="text-zinc-900 dark:text-white">4.0</span>
@@ -311,13 +585,13 @@
         </div>
       </div>
     
-      <p class="text-zinc-600 dark:text-zinc-400 mb-4">Training programs can bring you a super exciting experience of learning through online! You never face any negative experience while enjoying your.</p>
+      <p class="text-zinc-600 dark:text-zinc-400 mb-4">Excellent Service..Personally i got a Great Service and Guidelines. All the process were Fast and they kept me updated throughout.I strongly Recommended <span class="text-purple-600">Edexon</span> to every one who wish to Go Abroad.. </p>
     
-      <a href="#" class="text-purple-600 dark:text-purple-400 font-semibold flex items-center">Explore More <span class="ml-1">➔</span></a>
+      <!-- <a href="#" class="text-purple-600 dark:text-purple-400 font-semibold flex items-center">Explore More <span class="ml-1">➔</span></a> -->
     
     </div>
 
-    <div class="relative bg-white dark:bg-zinc-800 shadow-lg rounded-lg p-6 max-w-sm border border-purple-200 dark:border-zinc-700 overflow-hidden hover:border-line">
+    <div class="relative bg-white dark:bg-zinc-800 shadow-lg rounded-lg p-6 max-w-sm border border-purple-200 dark:border-zinc-700 h-64 overflow-hidden hover:border-line">
 
       <!-- Unique border style for top left corner -->
       <div class="absolute top-0 left-0 w-8 h-8 bg-purple-500 transform -translate-x-1/2 translate-y-1/2 rotate-45"></div>
@@ -325,7 +599,7 @@
       <div class="flex items-center mb-4">
         <img src="https://res.cloudinary.com/duqsjmwyg/image/upload/v1717762991/m4tvhgna7cjzgbdeevkk.png" alt="Jane Cooper" class="w-16 h-16 rounded-lg mr-4">
         <div>
-          <h3 class="text-xl font-semibold text-zinc-900 dark:text-white">Jane Cooper</h3>
+          <h3 class="text-xl font-semibold text-zinc-900 dark:text-white">Meshek Preshy</h3>
           <div class="flex items-center text-yellow-500">
             <span class="mr-1">⭐</span>
             <span class="text-zinc-900 dark:text-white">4.0</span>
@@ -333,15 +607,16 @@
         </div>
       </div>
     
-      <p class="text-zinc-600 dark:text-zinc-400 mb-4">Training programs can bring you a super exciting experience of learning through online! You never face any negative experience while enjoying your.</p>
+      <p class="text-zinc-600 dark:text-zinc-400 mb-4">I am extremely happy with the services provided by <span class="text-purple-600">Edexon</span> Study Abroad.Their Student Counselors are very helpful in giving the right advice and they described everything clearly about the variety of Courses
+      </p>
     
-      <a href="#" class="text-purple-600 dark:text-purple-400 font-semibold flex items-center">Explore More <span class="ml-1">➔</span></a>
+      <!-- <a href="#" class="text-purple-600 dark:text-purple-400 font-semibold flex items-center">Explore More <span class="ml-1">➔</span></a> -->
     
     </div>
 
     
 
-    <div class="relative bg-white dark:bg-zinc-800 shadow-lg rounded-lg p-6 max-w-sm border border-purple-200 dark:border-zinc-700 overflow-hidden hover:border-line">
+    <div class="relative bg-white dark:bg-zinc-800 shadow-lg rounded-lg p-6 max-w-sm border border-purple-200 dark:border-zinc-700 h-64 overflow-hidden hover:border-line">
 
       <!-- Unique border style for top left corner -->
       <div class="absolute top-0 left-0 w-8 h-8 bg-purple-500 transform -translate-x-1/2 translate-y-1/2 rotate-45"></div>
@@ -349,7 +624,7 @@
       <div class="flex items-center mb-4">
         <img src="https://res.cloudinary.com/duqsjmwyg/image/upload/v1717762991/m4tvhgna7cjzgbdeevkk.png" alt="Jane Cooper" class="w-16 h-16 rounded-lg mr-4">
         <div>
-          <h3 class="text-xl font-semibold text-zinc-900 dark:text-white">Jane Cooper</h3>
+          <h3 class="text-xl font-semibold text-zinc-900 dark:text-white">Anitha Thomas</h3>
           <div class="flex items-center text-yellow-500">
             <span class="mr-1">⭐</span>
             <span class="text-zinc-900 dark:text-white">4.0</span>
@@ -357,9 +632,9 @@
         </div>
       </div>
     
-      <p class="text-zinc-600 dark:text-zinc-400 mb-4">Training programs can bring you a super exciting experience of learning through online! You never face any negative experience while enjoying your.</p>
+      <p class="text-zinc-600 dark:text-zinc-400 mb-4">    One of the best consultants i've ever seen, they are fast,efficient and are very much reliable in any situations.</p>
     
-      <a href="#" class="text-purple-600 dark:text-purple-400 font-semibold flex items-center">Explore More <span class="ml-1">➔</span></a>
+      <!-- <a href="#" class="text-purple-600 dark:text-purple-400 font-semibold flex items-center">Explore More <span class="ml-1">➔</span></a> -->
     
     </div>
   </div>
@@ -368,28 +643,22 @@
   </div>
 </div>
 
-
 <div class="flex flex-col items-center justify-center min-h-screen bg-zinc-100 dark:bg-zinc-900">
-  <h1 class="text-3xl font-bold text-zinc-800 dark:text-zinc-200 mb-8">What we <span class="text-purple-600">Offer</span></h1>
+  <h1 class="text-3xl font-bold text-zinc-800 dark:text-zinc-200 mb-8"><span class="text-purple-600">Edexon: </span>Global Career Pathways</h1>
   <div class="relative w-full max-w-4xl">
     <div class="flex overflow-hidden">
       <div class="flex transition-transform duration-500 ease-in-out transform" id="slider">
         <!-- Images -->
-        <div class="w-1/5 px-2 transform hover:scale-105 transition-transform duration-300 ease-in-out border-blue-500">
-          <img src="https://res.cloudinary.com/duqsjmwyg/image/upload/v1717759398/miss5huk4oljs4j3kkpy.jpg" alt="Image 1" class="object-cover h-64 w-full">
+        <div class="w-full sm:w-1/5 px-2 transform hover:scale-105 transition-transform duration-300 ease-in-out border-blue-500">
+          <img src="https://res.cloudinary.com/dlw595vhm/image/upload/v1719987481/young-pleased-pretty-caucasian-schoolgirl-with-headphones-neck-wearing-glasses-back-bag-holds-toy-plane-globe-pink-with-copy-space_1_atobav.jpg" alt="Image 1" class="object-cover h-64 w-full">
         </div>
-        <div class="w-1/5 px-2 transform hover:scale-105 transition-transform duration-300 ease-in-out">
-          <img src="https://res.cloudinary.com/duqsjmwyg/image/upload/v1717759398/miss5huk4oljs4j3kkpy.jpg" alt="Image 2" class="object-cover h-64 w-full">
+        <div class="w-full sm:w-1/5 px-2 transform hover:scale-105 transition-transform duration-300 ease-in-out">
+          <img src="https://res.cloudinary.com/dlw595vhm/image/upload/v1719987481/day-office-travel-agency_riubt8.jpg" alt="Image 2" class="object-cover h-64 w-full">
         </div>
-        <div class="w-1/5 px-2 transform hover:scale-105 transition-transform duration-300 ease-in-out">
+        <div class="w-full sm:w-1/5 px-2 transform hover:scale-105 transition-transform duration-300 ease-in-out">
           <img src="https://res.cloudinary.com/duqsjmwyg/image/upload/v1717759398/miss5huk4oljs4j3kkpy.jpg" alt="Image 3" class="object-cover h-64 w-full">
         </div>
-        <div class="w-1/5 px-2 transform hover:scale-105 transition-transform duration-300 ease-in-out">
-          <img src="https://res.cloudinary.com/duqsjmwyg/image/upload/v1717759398/miss5huk4oljs4j3kkpy.jpg" alt="Image 4" class="object-cover h-64 w-full">
-        </div>
-        <div class="w-1/5 px-2 transform hover:scale-105 transition-transform duration-300 ease-in-out">
-          <img src="https://res.cloudinary.com/duqsjmwyg/image/upload/v1717759398/miss5huk4oljs4j3kkpy.jpg" alt="Image 5" class="object-cover h-64 w-full">
-        </div>
+       
       </div>
     </div>
     <div class="absolute inset-0 flex items-center justify-between px-4">
@@ -402,29 +671,178 @@
     </div>
   </div>
   <div class="mt-4 text-center text-zinc-600 dark:text-zinc-400 max-w-xl font-semibold" id="imageDescription">
-    <p>Diverse Courses: Explore a wide range of academic programs</p>
+    <p>1000's of Job Oriented Courses, World's Best Universities,<br>
+    3 Year Temporary Resident Permit After The Course</p>
 </div>
 </div>
 
 
-
-
-    <div class="flex flex-col md:flex-row items-center bg-white dark:bg-zinc-900 p-6 rounded-lg shadow-lg">
-  <div class="relative w-full md:w-1/2">
-    <img class="rounded-lg" src="https://res.cloudinary.com/duqsjmwyg/image/upload/v1717759395/byvz6rlpzwe6rvr5pycc.jpg" alt="Travel Image">
   
-    <div class="absolute bottom-4 left-4 bg-white dark:bg-zinc-800 p-4 rounded-lg shadow-md">
-      <div class="flex items-center">
-        <div>
-          <p class="text-zinc-600 dark:text-zinc-300 text-sm">successful People</p>
-          <p id="visitorCount" class="text-black dark:text-white text-lg font-semibold">1</p>
-        </div>
-      </div>
+
+</div>
+
+
+
+<div class="container mx-auto p-6 bg-white shadow-lg rounded-lg mt-10 space-y-8">
+  <h1 class="text-3xl font-bold text-zinc-800 dark:text-zinc-200 mb-8 text-center">Why <span class="text-purple-600">Edexon?</span></h1>
+  
+  <!-- First Section -->
+  <div class="flex flex-col md:flex-row items-center md:space-x-6">
+    <div class="md:w-1/2">
+      <p class="text-lg leading-relaxed mb-4 text-gray-600">
+        <span class="text-purple-600">Edexon</span>, one of the first overseas education experts in the region, provides educational advice, support, and placement to students who are interested in studying abroad. You might have come across different types of education agents, consultants, and advisers while seeking a representative abroad. <span class="text-purple-600">Edexon</span> stands apart from the crowd even with its unique name “<span class="text-purple-600">Edexon</span>”.
+      </p>
+    </div>
+    <div class="md:w-1/2">
+      <img src="https://res.cloudinary.com/dlw595vhm/image/upload/v1719982762/Trainingsformen_Sprachreisen-1-1_bxafws.jpg" alt="Image Description" class="rounded-lg shadow-md">
     </div>
   </div>
+  
+  <!-- Second Section -->
+  <div class="flex flex-col md:flex-row-reverse items-center md:space-x-6 md:space-x-reverse">
+    <div class="md:w-1/2">
+      <p class="text-lg leading-relaxed mb-4 text-gray-600">
+        <span class="text-purple-600">Edexon</span> has long enjoyed a widely envied reputation for providing universally trusted and respected higher education advice. The emerging name like ‘<span class="text-purple-600">Edexon</span>’ is a flamboyant answer to all languages of expertise of higher education consultancies in India. Within a span of 15 years, this reality has been not surprising for those who have experienced its proficiency and longevity.<br><br>
+        The dynamism of <span class="text-purple-600">Edexon</span> to offer realistic support to students who wished for their higher study abroad has already written golden anecdotes and minted a genre of professionals in a sequence of a win over thousands of hearts and canons. As a ‘Doyen’ of Indian educational consultancies, <span class="text-purple-600">Edexon</span>’s services have largely avoided being preoccupied with antagonism or the breed of choices that benefit few students at the expense of others. It is the VOICE of students, their families, and Indian society that must be listened to first and foremost.
+
+      </p>
+    </div>
+    <div class="md:w-1/2">
+      <img src="https://res.cloudinary.com/dlw595vhm/image/upload/v1719982886/home-page-1st-front-photo_qvw3o1.jpg" alt="Image Description" class="rounded-lg shadow-md">
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+<div class="flex flex-col items-center justify-center min-h-screen bg-zinc-100 dark:bg-zinc-900">
+<div class="container mx-auto px-4 mr-2 ml-2">
+  <h1 class="text-3xl font-bold text-zinc-800 dark:text-zinc-200 mb-8 text-center">Choose Your <span class="text-purple-600">Destination</span></h1>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      <div class="border rounded-lg overflow-hidden">
+          <img src="https://res.cloudinary.com/dlw595vhm/image/upload/v1719921512/australia-2_tll7hh.jpg" alt="Image 1" class="w-full h-auto">
+          <p class="text-center p-4 text-black">Australia</p>
+      </div>
+      <div class="border rounded-lg overflow-hidden">
+          <img src="https://res.cloudinary.com/dlw595vhm/image/upload/v1719921513/newzland_gsrlo2.jpg" alt="Image 2" class="w-full h-auto">
+          <p class="text-center p-4 text-black">Newzealand</p>
+      </div>
+      <div class="border rounded-lg overflow-hidden">
+          <img src="https://res.cloudinary.com/dlw595vhm/image/upload/v1719921512/canada-1_i0m8pz.jpg" alt="Image 3" class="w-full h-auto">
+          <p class="text-center p-4 text-black">Canada</p>
+      </div>
+
+      <div class="border rounded-lg overflow-hidden">
+        <img src="https://res.cloudinary.com/dlw595vhm/image/upload/v1719988763/malaysia-travel-583d01ac5f9b58d5b13cec0d_mu1qur.jpg" alt="Image 1" class="w-full h-auto">
+        <p class="text-center p-4 text-black">Malaysia</p>
+    </div>
+    <div class="border rounded-lg overflow-hidden">
+        <img src="https://res.cloudinary.com/dlw595vhm/image/upload/v1719988762/UnitedKindom_trfsq6.jpg" alt="Image 2" class="w-full h-auto">
+        <p class="text-center p-4 text-black">United Kingdom</p>
+    </div>
+    <div class="border rounded-lg overflow-hidden">
+        <img src="https://res.cloudinary.com/dlw595vhm/image/upload/v1719999884/Jionq4_fm4yte.jpg" alt="Image 3" class="w-full h-auto">
+        <p class="text-center p-4 text-black">United States Of America</p>
+    </div>
+
+
+  </div>
+</div>
+</div>
+
+
+
+
+<div class="flex flex-col md:flex-row items-center bg-white dark:bg-zinc-900 p-6 rounded-lg shadow-lg relative">
+  <div class="relative w-full md:w-1/2">
+    <img class="rounded-lg" src="https://res.cloudinary.com/duqsjmwyg/image/upload/v1717759395/byvz6rlpzwe6rvr5pycc.jpg" alt="Travel Image">
+
+    <div class="fixed left-4 bg-white dark:bg-zinc-800 p-4 rounded-lg shadow-md">
+
+     <div id="infoPanel" class="fixed bottom-4 right-1 bg-white dark:bg-zinc-800 p-4 rounded-lg shadow-md w-full">
+  <div class="flex flex-row justify-between items-start">
+
+    <div class="mb-2">
+      <p class="text-zinc-600 dark:text-zinc-300 font-bold PanelText">Happy Students</p>
+      <p id="visitorCount" class="text-purple-600 dark:text-white text-lg font-semibold">1</p>
+    </div>
+
+    <div class="mb-2">
+      <p class="text-zinc-600 dark:text-zinc-300 font-bold PanelText">Approved Courses</p>
+      <p id="approvedCoursesCount" class="text-purple-600 dark:text-white text-lg font-semibold">1</p>
+    </div>
+
+    <div class="mb-2">
+      <p class="text-zinc-600 dark:text-zinc-300 font-bold PanelText">Top Universities</p>
+      <p  id="topUniversitiesCount" class=" dark:text-white text-lg font-semibold text-purple-600">1</p>
+    </div>
+
+    <div class="mb-2">
+      <p class="text-zinc-600 dark:text-zinc-300 font-bold PanelText">Graduate Students</p>
+      <p id="graduateStudentsCount"class="text-purple-600 dark:text-white text-lg font-semibold">1</p>
+    </div>
+
+    <button id="toggleInfoPanel" class="absolute -top-2 -right-2 text-black p-2 rounded-full">
+      <i class="fas fa-times"></i>
+  </button>
+
+</div>
+  <div id="openInfoPanel" class="hidden">
+    <button id="openButton" class="bg-purple-500 text-white rounded-full w-12 h-12 flex items-center justify-center absolute bottom-4 left-4 transform -translate-x-full transition-transform duration-300 hover:translate-x-0">
+      Open
+    </button>
+  </div>
+</div>
+    </div>
+    
+  </div>
+
   <div class="w-full md:w-1/2 mt-6 md:mt-0 md:ml-6">
-    <h2 class="text-2xl font-bold text-black dark:text-white">Welcome to Your Gateway to EDEXON INTERNATIONAL</h2>
-    <p class="mt-4 text-zinc-600 dark:text-zinc-300">Discover a world of academic opportunities with our overseas education services. Whether you aim to explore diverse courses, gain insights into various countries, or navigate the application process, we are here to guide you every step of the way. Transform your educational dreams into reality and embark on an exciting journey towards a brighter future. Explore, apply, and succeed with our expert support and resources tailored just for you.</p>
+    <h4 class="text-2xl font-bold text-white ">Your Guide To Find The Right</h4>
+    <h2 class="text-2xl font-bold text-black dark:text-white mt-3">Leader in Abroad Education</h2>
+    <p class="mt-4 text-zinc-600 dark:text-zinc-300"><span class="text-purple-600">Edexon</span> International, a leader in education abroad, has been providing consultancy services to around 300 overseas education consultants through our network. We have a centralized system that takes care of recruiting and staffing personnel for our consultants, training them in the visa documentation process, statement of purpose, visa interview, financial transaction, etc.</p>
+    
+    <div class="mt-4">
+      <h3 class="text-lg font-bold text-purple-500">Top Ten Most Popular Courses for International Students</h3>
+      <ul class="list-none mt-2 text-zinc-600 dark:text-zinc-300">
+          <li class="flex items-center">
+              <span class="mr-2">&#8226;</span> Business Studies
+          </li>
+          <li class="flex items-center">
+              <span class="mr-2">&#8226;</span> Health Care and Nursing
+          </li>
+          <li class="flex items-center">
+              <span class="mr-2">&#8226;</span> Finance
+          </li>
+          <li class="flex items-center">
+              <span class="mr-2">&#8226;</span> Management Studies
+          </li>
+          <li class="flex items-center">
+              <span class="mr-2">&#8226;</span> Law
+          </li>
+          <li class="flex items-center">
+              <span class="mr-2">&#8226;</span> Computer Science
+          </li>
+          <li class="flex items-center">
+              <span class="mr-2">&#8226;</span> Economics
+          </li>
+          <li class="flex items-center">
+              <span class="mr-2">&#8226;</span> Marketing
+          </li>
+          <li class="flex items-center">
+              <span class="mr-2">&#8226;</span> Accounting
+          </li>
+          <li class="flex items-center">
+              <span class="mr-2">&#8226;</span> Design
+          </li>
+      </ul>
+  </div>
+  
+    
     <button class="mt-6 bg-purple-500 text-white px-4 py-2 rounded-lg shadow-md">Read More</button>
   </div>
 </div>
@@ -441,11 +859,12 @@
       <div class="text-black space-y-4">
         <div class="flex items-center">
           <i class="fas fa-envelope mr-2"></i>
-          <span>paulDesign@gmail.com</span>
+          <span>info@edexon.net</span>
         </div>
         <div class="flex items-center">
           <i class="fas fa-phone mr-2"></i>
-          <span>+123 456 789</span>
+          <span>
+            +91 9061447555</span>
         </div>
         <div class="flex items-center">
           <i class="fas fa-map-marker-alt mr-2"></i>
@@ -484,7 +903,7 @@
           <input type="text" placeholder="Your phone number" class="w-full border-b-2 border-purple-500 py-2 focus:outline-none">
         </div>
         <div>
-          <input type="text" placeholder="Your country of residence" class="w-full border-b-2 border-purple-500 py-2 focus:outline-none">
+          <input type="text" placeholder="Your country of residence" class="w-full border-b-1 border-purple-500 py-2 focus:outline-none">
         </div>
         <div>
           <input type="email" placeholder="Your email address" class="w-full border-b-2 border-zinc-300 py-2 focus:outline-none">
@@ -503,11 +922,11 @@
 
 
 
-    <div class="bg-cover bg-center text-white py-10 px-5" style="background-image: url('https://res.cloudinary.com/duqsjmwyg/image/upload/v1717759396/eqrlvk9wmvcsji18sr0l.jpg');">
+    <div id="footer" class="bg-cover bg-center text-white py-10 px-5" style="background-image: url('https://res.cloudinary.com/duqsjmwyg/image/upload/v1717759396/eqrlvk9wmvcsji18sr0l.jpg');">
   <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
     <div>
-      <h2 class="text-3xl font-bold text-purple-400">Global Opportunities</h2>
-      <p class="mt-4">Global Opportunities Pvt. Ltd. is India’s leading education consultant that undertakes students' recruitment from India for its 700+ Institution partners across the globe.</p>
+      <img src="https://res.cloudinary.com/dlw595vhm/image/upload/v1719920194/Edexon_d2bpcv.jpg" alt="Web Factory Logo" class="h-16">
+      <p class="mt-4"><span class="text-purple-600">Edexon</span> is an overseas educational consultant, with expertise in Study Abroad. Our mission is to grow ourselves in the field of study abroad education in the manner of improvising our services which are being provided to students with the dreams of studying abroad.</p>
       <div class="flex space-x-4 mt-4">
         <a href="#" class="text-2xl"><i class="fab fa-facebook"></i></a>
         <a href="#" class="text-2xl"><i class="fab fa-twitter"></i></a>
@@ -534,9 +953,11 @@
       <p class="mt-4">Careers | Image Gallery | Video Gallery | Contact Us | Sitemap</p>
     </div>
   </div>
-  <div class="fixed right-0 top-1/2 transform -translate-y-1/2 bg-purple-500 text-white py-2 px-4 rounded-l-lg">
-    <a href="#contact" class="text-lg font-bold">Register Now</a>
+  <div class="fixed right-0 top-1/2 transform -translate-y-1/2 bg-white text-white py-2 px-4 rounded-l-lg flex items-center">
+    <i class="fab fa-whatsapp mr-2 text-3xl text-green-900"></i>
+    
   </div>
+  
 </div>
   
 
@@ -544,6 +965,90 @@
 
 
 <script>
+   document.addEventListener('DOMContentLoaded', function () {
+    const infoPanel = document.getElementById('infoPanel');
+    const footer = document.getElementById('footer');
+
+    function updateInfoPanelPosition() {
+      const footerRect = footer.getBoundingClientRect();
+      const panelRect = infoPanel.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      const footerTop = footerRect.top;
+      const panelHeight = panelRect.height;
+
+      if (footerTop < windowHeight) {
+        const overlapHeight = windowHeight - footerTop;
+        infoPanel.style.bottom = `${overlapHeight + 16}px`; // 16px is added to provide a small gap above the footer
+      } else {
+        infoPanel.style.bottom = '16px'; // Default position when not overlapping with footer
+      }
+    }
+
+    window.addEventListener('scroll', updateInfoPanelPosition);
+    window.addEventListener('resize', updateInfoPanelPosition);
+    updateInfoPanelPosition(); // Initial call
+  });
+
+document.addEventListener("DOMContentLoaded", function() {
+  const slides = document.querySelectorAll(".background-slider .slide");
+  let currentSlide = 0;
+
+  function showSlide(index) {
+    slides.forEach((slide, i) => {
+      if (i === index) {
+        slide.classList.add("active");
+      } else {
+        slide.classList.remove("active");
+      }
+    });
+  }
+
+  function nextSlide() {
+    const prevSlide = currentSlide;
+    currentSlide = (currentSlide + 1) % slides.length;
+    showSlide(currentSlide);
+    setTimeout(() => {
+      slides[prevSlide].classList.remove("active");
+    }, 500); // Adjust timing to match transition duration in CSS
+  }
+
+  function prevSlide() {
+    const prevSlide = currentSlide;
+    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+    showSlide(currentSlide);
+    setTimeout(() => {
+      slides[prevSlide].classList.remove("active");
+    }, 1000); // Adjust timing to match transition duration in CSS
+  }
+
+  document.getElementById("nextSlide").addEventListener("click", nextSlide);
+  document.getElementById("prevSlide").addEventListener("click", prevSlide);
+
+  setInterval(nextSlide, 8000); // Change slide every 5 seconds (adjust timing as needed)
+});
+
+
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    const toggleButton = document.getElementById("toggleInfoPanel");
+    const infoPanel = document.getElementById("infoPanel");
+    const openButton = document.getElementById("openButton");
+    const openInfoPanel = document.getElementById("openInfoPanel");
+
+    toggleButton.addEventListener("click", function() {
+      infoPanel.classList.add("hidden");
+      openInfoPanel.classList.remove("hidden");
+    });
+
+    openButton.addEventListener("click", function() {
+      openInfoPanel.classList.add("hidden");
+      infoPanel.classList.remove("hidden");
+    });
+  });
+
+
+
   document.addEventListener('DOMContentLoaded', () => {
    const productCards = document.querySelectorAll('.product-card');
 
@@ -567,32 +1072,37 @@
  });
 
 
-  // Get the elements by their IDs
-  const travelPackagesCount = document.getElementById('travelPackagesCount');
-  const visitorCount = document.getElementById('visitorCount');
+ // Define an array of elements with their IDs and maximum values
+const elements = [
+  { id: 'visitorCount', maxNumber: 2000 },
+  { id: 'approvedCoursesCount', maxNumber: 2500 }, // Example with different max number
+  { id: 'topUniversitiesCount', maxNumber: 400 }, // Example with different max number
+  { id: 'graduateStudentsCount', maxNumber: 1200 } // Example with different max number
+];
 
-  // Set the maximum value for the numbers
-  const maxNumber = 4550;
-
-  // Function to increment the numbers sequentially
-  function incrementNumbers() {
+// Function to increment the numbers sequentially for each element
+function incrementNumbers() {
+  // Determine the maximum maxNumber to calculate the interval
+  const maxMaxNumber = Math.max(...elements.map(el => el.maxNumber));
+  
+  // Calculate the interval time based on the largest maxNumber
+  const intervalTime = 3000 / maxMaxNumber; // Adjust 3000 milliseconds as desired
+  
+  elements.forEach(element => {
+    const targetElement = document.getElementById(element.id);
     let count = 1;
     const interval = setInterval(() => {
-      // Update the numbers
-      visitorCount.textContent = count;
-
-      // Stop the interval when the count reaches the maximum number
-      if (count === maxNumber) {
+      targetElement.textContent = count;
+      if (count === element.maxNumber) {
         clearInterval(interval);
       }
-
-      // Increment the count
       count++;
-    }, 1); // Adjust the interval time (in milliseconds) as needed
-  }
+    }, intervalTime); // Use calculated interval time for synchronization
+  });
+}
 
-  // Call the function to start incrementing the numbers
-  incrementNumbers();
+// Call the function to start incrementing the numbers for all elements
+incrementNumbers();
 
 
 
@@ -600,7 +1110,7 @@
   const prev = document.getElementById('prev');
   const next = document.getElementById('next');
   const images = slider.querySelectorAll('div');
-  const imageDescriptions = ["Diverse Courses: Explore a wide range of academic programs", "Personalized Counseling: Get tailored guidance from experienced counselors.", "Global Partnerships: Access top universities worldwide.", "Pre-Departure Support: Smooth transition with travel and accommodation assistance.", "Career Development: Enhance employability with internship and networking opportunities."];
+  const imageDescriptions = ["1000's of Job Oriented Courses, World's Best Universities,3 Year Temporary Resident Permit After The Course", "Globally Accepted Qualifications, *IELTS Not Required, Permanent Residency Opportunity", "Global Partnerships: Access top universities worldwide.", "Pre-Departure Support: Smooth transition with travel and accommodation assistance.", "Career Development: Enhance employability with internship and networking opportunities."];
 
   let currentIndex = 0;
 
